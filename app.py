@@ -3,6 +3,8 @@ from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin, RoleMixin, roles_accepted, Security, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, login_manager, login_user
+# import 'request' to request data from html
+from flask import request
 
 app = Flask(__name__)
 
@@ -63,10 +65,6 @@ def index():  # put application's code here
 @app.route('/about')
 def about():  # put application's code here
     return render_template('about.html')
-
-
-# import 'request' to request data from html
-from flask import request
 
 
 # signup page
@@ -195,5 +193,3 @@ def login():  # put application's code here
 
 if __name__ == '__main__':
     app.run()
-    # runs the app instance
-    app.app_context().push()
