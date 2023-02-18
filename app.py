@@ -13,10 +13,9 @@ app = Flask(__name__)
 # this will create the db file in instance
 # if database not present already
 
-
-DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='${{ PGUSER }}', pw='${{ PGPASSWORD }}',
-                                                               url='${{ PGHOST }}:${{ PGPORT }}',
-                                                               db='${{ PGDATABASE }}')
+DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='postgres', pw='wPexSfG2ZhGrkBSbXrSf',
+                                                               url='containers-us-west-176.railway.app:7481',
+                                                               db='railway')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 # needed for session cookies
