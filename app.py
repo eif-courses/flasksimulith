@@ -5,13 +5,20 @@ from flask_security import UserMixin, RoleMixin, roles_accepted, Security, SQLAl
 from flask_login import LoginManager, login_manager, login_user
 # import 'request' to request data from html
 from flask import request
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 
 # path to sqlite database
 # this will create the db file in instance
 # if database not present already
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.sqlite3"
+
+
+DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='${{ PGUSER }}', pw='${{ PGPASSWORD }}',
+                                                               url='${{ PGHOST }}:${{ PGPORT }}',
+                                                               db='${{ PGDATABASE }}')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 # needed for session cookies
 app.config['SECRET_KEY'] = 'MY_SECRET'
 # hashes the password and then stores in the databse
@@ -22,7 +29,7 @@ app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 db = SQLAlchemy()
 bcrypt = Bcrypt(app)
-
+migrate = Migrate(app, db)
 db.init_app(app)
 # runs the app instance
 app.app_context().push()

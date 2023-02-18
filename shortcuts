@@ -1,0 +1,12 @@
+pip freeze --local > requirements.txt
+
+https://vsupalov.com/flask-sqlalchemy-postgres/
+
+export POSTGRES_URL="127.0.0.1:5432"
+export POSTGRES_USER="postgres"
+export POSTGRES_PW="dbpw"
+export POSTGRES_DB="test"
+
+flask db init
+$ flask db migrate
+$ flask db upgrade
