@@ -48,6 +48,12 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users, backref='roled')
 
 
+def __init__(self, email, active, password):
+    self.email = email
+    self.active = active
+    self.password = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+
 # create table in database for storing roles
 class Role(db.Model, RoleMixin):
     __tablename__ = 'role'
@@ -88,11 +94,13 @@ def signup():
             # render signup.html if user exists
             return render_template('signup.html', msg=msg)
 
-        # if user doesn't exist
-        pw_hash = bcrypt.generate_password_hash(request.form['password'])
-        # store the user to database
-        # user = User(email=request.form['email'], active=1, password=request.form['password'])
-        user = User(email=request.form['email'], active=1, password=pw_hash)
+            # if user doesn't exist
+
+            # store the user to database
+        hashed_password = bcrypt.generate_password_hash(request.form['password']).decode('UTF-8')
+        user = User(email=request.form['email'], active=1, password=hashed_password)
+
+        # user = User(email=request.form['email'], active=1, password=pw_hash)
 
         # store the role
         role = Role.query.filter_by(id=request.form['options']).first()
