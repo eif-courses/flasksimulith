@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, url_for
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin, RoleMixin, roles_accepted, Security, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, login_manager, login_user
@@ -18,6 +19,8 @@ app.config['SECURITY_REGISTERABLE'] = True
 # to send automatic registration email to user
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 db = SQLAlchemy()
+bcrypt = Bcrypt(app)
+
 db.init_app(app)
 # runs the app instance
 app.app_context().push()
@@ -82,10 +85,10 @@ def signup():
             return render_template('signup.html', msg=msg)
 
         # if user doesn't exist
-
+        pw_hash = bcrypt.generate_password_hash(request.form['password'])
         # store the user to database
-        #user = User(email=request.form['email'], active=1, password=request.form['password'])
-        user = User(email=request.form['email'], active=1, password=request.form['password'])
+        # user = User(email=request.form['email'], active=1, password=request.form['password'])
+        user = User(email=request.form['email'], active=1, password=pw_hash)
 
         # store the role
         role = Role.query.filter_by(id=request.form['options']).first()
@@ -114,8 +117,11 @@ def signin():
         # search user in database
         user = User.query.filter_by(email=request.form['email']).first()
         # if exist check password
+
+        check_password = bcrypt.check_password_hash(user.password, request.form['password'])  # returns True
+
         if user:
-            if user.password == request.form['password']:
+            if check_password:
                 # if password matches, login the user
                 login_user(user)
                 return redirect(url_for('index'))
