@@ -83,7 +83,7 @@ def signup():
             return render_template('signup.html', msg=msg)
 
         # if user doesn't exist
-        pw_hash = bcrypt.generate_password_hash(request.form['password'])
+        pw_hash = bcrypt.generate_password_hash(request.form['password'] + app.config['SECURITY_PASSWORD_SALT'])
         # store the user to database
         # user = User(email=request.form['email'], active=1, password=request.form['password'])
         user = User(email=request.form['email'], active=1, password=pw_hash)
@@ -116,7 +116,8 @@ def signin():
         user = User.query.filter_by(email=request.form['email']).first()
         # if exist check password
 
-        check_password = bcrypt.check_password_hash(user.password, request.form['password'])  # returns True
+        check_password = bcrypt.check_password_hash(user.password, request.form['password'] + app.config[
+            'SECURITY_PASSWORD_SALT'])  # returns True
 
         if user:
             if check_password:
