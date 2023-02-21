@@ -6,9 +6,19 @@ from flask_login import LoginManager, login_manager, login_user
 # import 'request' to request data from html
 from flask import request
 from flask_migrate import Migrate
+from flask_assets import Bundle, Environment
+# https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
+
 
 app = Flask(__name__)
 
+assets = Environment(app)
+css = Bundle("src/main.css", output="dist/main.css")
+js = Bundle("src/*.js", output="dist/main.js")
+assets.register("css", css)
+assets.register("js", js)
+css.build()
+js.build()
 # path to sqlite database
 # this will create the db file in instance
 # if database not present already
