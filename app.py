@@ -1,17 +1,19 @@
 from flask import Flask, render_template, redirect, url_for
+from flask_babel import gettext, ngettext, lazy_gettext
+from flask_babel import Babel
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin, RoleMixin, roles_accepted, Security, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, login_manager, login_user
-# import 'request' to request data from html
 from flask import request
 from flask_migrate import Migrate
 from flask_assets import Bundle, Environment
-# https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
 
+# https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
+# https://alpinejs.dev/start-here
 
 app = Flask(__name__)
-
+babel = Babel(app)
 assets = Environment(app)
 css = Bundle("src/main.css", output="dist/main.css")
 js = Bundle("src/*.js", output="dist/main.js")
@@ -77,6 +79,18 @@ with app.app_context():
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 security = Security(app, user_datastore)
+
+
+# https://medium.com/@nicolas_84494/flask-create-a-multilingual-web-application-with-language-specific-urls-5d994344f5fd
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+app.config['LANGUAGES'] = {
+    'en': 'English',
+    'fr': 'French'
+}
 
 
 @app.route('/')

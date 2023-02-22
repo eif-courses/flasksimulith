@@ -5,7 +5,11 @@
 {% block content %}
 
 
+<div x-data="{ count: 0 }">
+    <button x-on:click="count++">{{ _('Increment') }}</button>
 
+    <span x-text="count"></span>
+</div>
   <button hx-post="/clicked" hx-swap="outerHTML">
     Click Me
   </button>
