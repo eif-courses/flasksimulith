@@ -253,10 +253,5 @@ def mydetails():
     return render_template("mydetails.html")
 
 
-@app.route('/login')
-def login():  # put application's code here
-    return render_template('login.html')
-
-
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
