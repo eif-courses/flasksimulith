@@ -219,7 +219,7 @@ def teachers():
     return render_template("teachers.html", teachers=teachers)
 
 
-# for staff page
+# for staff page current
 @app.route('/staff')
 # only Admin and Teacher can access the page
 @roles_accepted('Admin', 'Teacher')
