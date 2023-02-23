@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_manager, login_user
 from flask import request
 from flask_migrate import Migrate
 from flask_assets import Bundle, Environment
-from flask_babel import Babel
+from flask_babel import Babel, gettext
 
 # https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
 
@@ -32,7 +32,6 @@ app.config.from_pyfile('settings.cfg')
 babel = Babel(app)
 
 
-@babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
@@ -44,11 +43,7 @@ def get_locale():
     return request.accept_languages.best_match(['lt', 'en', 'de'])
 
 
-@babel.timezoneselector
-def get_timezone():
-    user = getattr(g, 'user', None)
-    if user is not None:
-        return user.timezone
+babel.init_app(app, locale_selector=get_locale)
 
 
 @app.route('/test')
