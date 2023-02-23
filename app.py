@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_manager, login_user
 from flask import request
 from flask_migrate import Migrate
 from flask_assets import Bundle, Environment
-from flask_babel import *
+from flask_babel import Babel
 
 # https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
 
