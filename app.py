@@ -1,19 +1,19 @@
-from flask import Flask, render_template, redirect, url_for
-from flask_babel import gettext, ngettext, lazy_gettext
-from flask_babel import Babel
+from flask import Flask, render_template, redirect, url_for, g
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_security import UserMixin, RoleMixin, roles_accepted, Security, SQLAlchemySessionUserDatastore
 from flask_login import LoginManager, login_manager, login_user
+# import 'request' to request data from html
 from flask import request
 from flask_migrate import Migrate
 from flask_assets import Bundle, Environment
+from flask_babel import *
 
 # https://testdriven.io/blog/flask-htmx-tailwind/?ref=morioh.com&utm_source=morioh.com
-# https://alpinejs.dev/start-here
+
 
 app = Flask(__name__)
-babel = Babel(app)
+
 assets = Environment(app)
 css = Bundle("src/main.css", output="dist/main.css")
 js = Bundle("src/*.js", output="dist/main.js")
@@ -28,6 +28,42 @@ js.build()
 DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='postgres', pw='wPexSfG2ZhGrkBSbXrSf',
                                                                url='containers-us-west-176.railway.app:7481',
                                                                db='railway')
+app.config.from_pyfile('settings.cfg')
+babel = Babel(app)
+
+
+@babel.localeselector
+def get_locale():
+    # if a user is logged in, use the locale from the user settings
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.locale
+    # otherwise try to guess the language from the user accept
+    # header the browser transmits.  We support de/fr/en in this
+    # example.  The best match wins.
+    return request.accept_languages.best_match(['lt', 'en', 'de'])
+
+
+@babel.timezoneselector
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
+
+
+@app.route('/test')
+def test():
+    current_language = request.accept_languages.best
+    title = gettext("title")
+    sub_title = gettext("sub_title")
+    translation = gettext("translation")
+    country = gettext("country")
+    Taiwan = gettext("Taiwan")
+    Japan = gettext("japan")
+    US = gettext("US")
+    test = gettext("<b>我會變亂碼</b>")
+    return render_template("test.html", **locals())
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = DB_URL
 # needed for session cookies
@@ -79,18 +115,6 @@ with app.app_context():
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 security = Security(app, user_datastore)
-
-
-# https://medium.com/@nicolas_84494/flask-create-a-multilingual-web-application-with-language-specific-urls-5d994344f5fd
-@babel.localeselector
-def get_locale():
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
-app.config['LANGUAGES'] = {
-    'en': 'English',
-    'fr': 'French'
-}
 
 
 @app.route('/')
