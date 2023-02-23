@@ -29,8 +29,6 @@ DB_URL = 'postgresql+psycopg2://{user}:{pw}@{url}/{db}'.format(user='postgres', 
                                                                url='containers-us-west-176.railway.app:7481',
                                                                db='railway')
 app.config.from_pyfile('settings.cfg')
-babel = Babel(app)
-
 
 def get_locale():
     # if a user is logged in, use the locale from the user settings
@@ -43,7 +41,13 @@ def get_locale():
     return request.accept_languages.best_match(['lt', 'en', 'de'])
 
 
-babel.init_app(app, locale_selector=get_locale)
+def get_timezone():
+    user = getattr(g, 'user', None)
+    if user is not None:
+        return user.timezone
+
+
+babel = Babel(app, locale_selector=get_locale, timezone_selector=get_timezone)
 
 
 @app.route('/test')
