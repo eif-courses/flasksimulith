@@ -10,3 +10,6 @@ export POSTGRES_DB="test"
 flask db init
 $ flask db migrate
 $ flask db upgrade
+
+
+npx tailwindcss -i src/main.css -o dist/main.css --watch

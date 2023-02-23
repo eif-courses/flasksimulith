@@ -127,6 +127,11 @@ def about():  # put application's code here
     return render_template('about.html')
 
 
+@app.route('/contact')
+def contact():  # put application's code here
+    return render_template('contacts.html')
+
+
 # signup page
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

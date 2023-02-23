@@ -2,8 +2,35 @@
 {% block title %}
     <title>Home Page</title>
 {% endblock title %}
+
+
+
+{% block header %}
+    Home
+{% endblock header %}
+
 {% block content %}
 
+<div x-data="{ isOpen: false }" class="relative ...">
+  <button type="button" @click="isOpen = !isOpen" class="...">
+    Options
+  </button>
+
+  <div
+    x-show="isOpen"
+    x-transition:enter="transition ease-out duration-100 transform"
+    x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-75 transform"
+    x-transition:leave-start="opacity-100 scale-100"
+    x-transition:leave-end="opacity-0 scale-95"
+    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg"
+  >
+    <div class="rounded-md bg-white shadow-xs">
+      <!-- Snipped  -->
+    </div>
+  </div>
+</div>
 
 <div x-data="{ count: 0 }">
     <button x-on:click="count++">{{ _('Increment') }}</button>
@@ -13,79 +40,6 @@
   <button hx-post="/clicked" hx-swap="outerHTML">
     Click Me
   </button>
-     <div class="bg-green-300 px-3 py-1">
-    <h2 class="text-3xl font-light text-white m-0">Beans Love Beers</h2>
-  </div>
-  <!-- Search Bar -->
-  <div class="container">
-    <input type="text" placeholder="Search for beer..."
-      class="border-2 ml-64 border-gray-700 w-2/5 mt-10 py-3 px-4"></input>
-    <button class="bg-blue-700 text-xl hover:bg-blue-500 text-white py-2 px-3">Search</button>
-  </div>
-  <!-- Selection -->
-  <div class="container">
-    <div class="grid gap-8 grid-cols-3 mt-5 ">
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/logo.jpg" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium.</p>
-        </div>
-      </div>
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg"
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/Asset 140.png" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium</p>
-        </div>
-      </div>
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg"
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/Asset 150.png" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium.</p>
-        </div>
-      </div>
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg"
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/Asset 160.png" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium.</p>
-        </div>
-      </div>
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg"
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/logo.jpg" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium.</p>
-        </div>
-      </div>
-      <div
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg"
-        class="transition duration-500 ease-in-out flex py-3 px-2 hover:bg-blue-400 transform hover:-translate-y-1 hover:scale-110 hover:text-white hover:shadow-none hover:rounded border border-gray-300 shadow-lg">
-        <img src="img/Asset 150.png" class="h-16 w-12 mr-20 ml-8 mt-10" alt="Image">
-        <div class="w-3/5 mr-0">
-          <h2 class="text-gray-800 font-bold">Buzz</h2>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore et excepturi autem iure molestias doloribus
-            ipsa praesentium</p>
-        </div>
-      </div>
-    </div>
-  </div>
 <!-- links to the pages -->
 <a href="/teachers">View all Teachers</a> (Access: Admin)<br><br>
 <a href="/staff">View all Staff</a> (Access: Admin, Teacher)<br><br>
